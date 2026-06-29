@@ -1,6 +1,4 @@
-<div align="center">
-  <img src="public/logo.png" alt="TVDex Logo" width="150" />
-</div>
+![TVDex](public/icon.svg)
 
 # 📺 TVDex
 
