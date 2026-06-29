@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { ThemeToggle } from "./ThemeToggle";
+
 export default function Header() {
   const pathname = usePathname();
 
@@ -35,6 +37,7 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="flex items-center gap-1">
+            <ThemeToggle />
             <Link
               href="/"
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${

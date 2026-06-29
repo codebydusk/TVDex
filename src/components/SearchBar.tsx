@@ -76,7 +76,9 @@ export default function SearchBar({
         <div className="absolute right-4 flex items-center gap-2">
           {value && (
             <button
+              type="button"
               onClick={() => onChange("")}
+              title="Clear search"
               className="rounded-md p-1 text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-hover)] transition-colors"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

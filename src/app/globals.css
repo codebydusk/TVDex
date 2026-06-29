@@ -8,6 +8,26 @@
 }
 
 :root {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #f4f4f5;
+  --card-hover: #e4e4e7;
+  --border: #e4e4e7;
+  --border-hover: #d4d4d8;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-glow: rgba(79, 70, 229, 0.15);
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --muted: #52525b;
+  --mark-bg: rgba(250, 204, 21, 0.5);
+  --mark-text: #b45309;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-bg-hover: rgba(244, 244, 245, 0.9);
+}
+
+.dark {
   --background: #09090b;
   --foreground: #fafafa;
   --card: #18181b;
@@ -23,11 +43,32 @@
   --muted: #71717a;
   --mark-bg: rgba(250, 204, 21, 0.3);
   --mark-text: #fbbf24;
+  --glass-bg: rgba(24, 24, 27, 0.8);
+  --glass-bg-hover: rgba(39, 39, 42, 0.9);
 }
 
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+}
+
+/* WebKit scrollbar styling (Safari, Chrome < 121, Edge, older browsers) */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--border-hover);
 }
 
 body {
@@ -48,24 +89,53 @@ mark {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; max-height: 0; }
-  to { opacity: 1; max-height: 2000px; }
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
-  50% { box-shadow: 0 0 40px var(--accent-glow); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .animate-fade-in {
@@ -86,14 +156,14 @@ mark {
 }
 
 .glass {
-  background: rgba(24, 24, 27, 0.8);
-  backdrop-filter: blur(16px);
+  background: var(--glass-bg);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border: 1px solid var(--border);
 }
 
 .glass-hover:hover {
-  background: rgba(39, 39, 42, 0.9);
+  background: var(--glass-bg-hover);
   border-color: var(--border-hover);
 }
 
@@ -134,7 +204,8 @@ mark {
     font-size: 9pt;
   }
 
-  th, td {
+  th,
+  td {
     border: 0.5pt solid #ccc;
     padding: 3pt 6pt;
     text-align: left;
@@ -176,6 +247,7 @@ mark {
   }
 }
 
-.print-header, .print-only {
+.print-header,
+.print-only {
   display: none;
 }

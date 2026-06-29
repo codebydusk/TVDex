@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -128,7 +128,11 @@ function CopyButton({ text }: { text: string }) {
 
 export default function DocsPage() {
   const [activeExample, setActiveExample] = useState(0);
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://tvdex.vercel.app";
+  const [baseUrl, setBaseUrl] = useState("https://tvdex.vercel.app");
+
+  useEffect(() => {
+    setBaseUrl(window.location.origin);
+  }, []);
 
   return (
     <>
