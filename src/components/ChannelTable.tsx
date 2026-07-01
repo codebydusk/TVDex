@@ -1,35 +1,14 @@
 "use client";
 
 import { useState } from "react";
-
-interface Channel {
-  id: string;
-  channel_number: number;
-  channel_name: string;
-  genre: string;
-  language: string;
-}
+import type { Channel } from "@/types";
+import { highlightMatch } from "@/lib/utils";
 
 interface ChannelTableProps {
   groupKey: string;
   channels: Channel[];
   searchQuery: string;
   defaultExpanded?: boolean;
-}
-
-function highlightMatch(text: string, query: string): React.ReactNode {
-  if (!query) return text;
-  const q = query.toLowerCase();
-  const idx = text.toLowerCase().indexOf(q);
-  if (idx === -1) return text;
-
-  return (
-    <>
-      {text.slice(0, idx)}
-      <mark>{text.slice(idx, idx + query.length)}</mark>
-      {text.slice(idx + query.length)}
-    </>
-  );
 }
 
 export default function ChannelTable({

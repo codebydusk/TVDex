@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export default function proxy(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Add CORS headers for API routes
   if (request.nextUrl.pathname.startsWith("/api/")) {
     const response = NextResponse.next();

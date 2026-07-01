@@ -7,14 +7,12 @@ import Footer from "@/components/Footer";
 import SearchBar from "@/components/SearchBar";
 import FilterPills from "@/components/FilterPills";
 import ChannelTable from "@/components/ChannelTable";
-
-interface Channel {
-  id: string;
-  channel_number: number;
-  channel_name: string;
-  genre: string;
-  language: string;
-}
+import type { Channel } from "@/types";
+import {
+  searchChannels,
+  filterChannels,
+  groupChannels,
+} from "@/lib/channels";
 
 const STORAGE_KEY = "tvdex_channels";
 const VERSION_KEY = "tvdex_version";
@@ -26,44 +24,26 @@ export default function HomePage() {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
-  // Load data from localStorage or fetch
-  const loadData = useCallback(async (forceRefresh = false) => {
+  // Fetch fresh channel data from the API
+  const fetchChannels = useCallback(async () => {
     setLoading(true);
-
-    if (!forceRefresh) {
-      try {
-        const cached = localStorage.getItem(STORAGE_KEY);
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          setChannels(parsed);
-          setLoading(false);
-
-          // Background version check
-          fetch("/api/version")
-            .then((r) => r.json())
-            .then((data) => {
-              const cachedVersion = localStorage.getItem(VERSION_KEY);
-              if (cachedVersion && cachedVersion !== data.version) {
-                // Version mismatch — re-fetch
-                loadData(true);
-              }
-            })
-            .catch(() => {});
-          return;
-        }
-      } catch {
-        // localStorage not available or corrupt
-      }
-    }
-
     try {
-      const res = await fetch("/data/jio_stb_channels.json");
-      const data: Channel[] = await res.json();
-      setChannels(data);
+      const allChannels: Channel[] = [];
+      let page = 1;
+      let totalPages = 1;
+
+      while (page <= totalPages) {
+        const res = await fetch(`/api/channels?limit=200&page=${page}`);
+        const json = await res.json();
+        allChannels.push(...json.data);
+        totalPages = json.pagination.totalPages;
+        page++;
+      }
+
+      setChannels(allChannels);
 
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        // Also fetch and store version
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(allChannels));
         const vRes = await fetch("/api/version");
         const vData = await vRes.json();
         localStorage.setItem(VERSION_KEY, vData.version);
@@ -73,21 +53,51 @@ export default function HomePage() {
     } catch (err) {
       console.error("Failed to load channel data:", err);
     }
-
     setLoading(false);
   }, []);
 
+  // On mount: load channels from localStorage cache, or fetch from API.
+  // Using Promise.resolve() keeps setState out of the synchronous effect body.
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    Promise.resolve().then(() => {
+      try {
+        const cached = localStorage.getItem(STORAGE_KEY);
+        if (cached) {
+          setChannels(JSON.parse(cached));
+          setLoading(false);
+
+          // Background version check — re-fetch silently if stale
+          fetch("/api/version")
+            .then((r) => r.json())
+            .then((data) => {
+              const cachedVersion = localStorage.getItem(VERSION_KEY);
+              if (cachedVersion && cachedVersion !== data.version) {
+                try {
+                  localStorage.removeItem(STORAGE_KEY);
+                  localStorage.removeItem(VERSION_KEY);
+                } catch {}
+                fetchChannels();
+              }
+            })
+            .catch(() => {});
+          return;
+        }
+      } catch {
+        // localStorage not available or corrupt
+      }
+
+      // No cache — fetch from API
+      fetchChannels();
+    });
+  }, [fetchChannels]);
 
   const handleRefreshData = useCallback(() => {
     try {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(VERSION_KEY);
     } catch {}
-    loadData(true);
-  }, [loadData]);
+    fetchChannels();
+  }, [fetchChannels]);
 
   // Derived data
   const languages = useMemo(
@@ -116,46 +126,16 @@ export default function HomePage() {
     return counts;
   }, [channels]);
 
-  // Filter and search
+  // Filter and search — reuse lib functions
   const filteredChannels = useMemo(() => {
-    let filtered = channels;
-
-    if (selectedLanguages.length > 0) {
-      filtered = filtered.filter((ch) =>
-        selectedLanguages.includes(ch.language)
-      );
-    }
-
-    if (selectedGenres.length > 0) {
-      filtered = filtered.filter((ch) => selectedGenres.includes(ch.genre));
-    }
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      filtered = filtered.filter(
-        (ch) =>
-          ch.channel_name.toLowerCase().includes(q) ||
-          ch.channel_number.toString().includes(q)
-      );
-    }
-
+    let filtered = filterChannels(channels, selectedLanguages, selectedGenres);
+    filtered = searchChannels(searchQuery, filtered);
     return filtered;
   }, [channels, selectedLanguages, selectedGenres, searchQuery]);
 
-  // Group channels
+  // Group channels — reuse lib function
   const groupedChannels = useMemo(() => {
-    const groups: Record<string, Channel[]> = {};
-
-    for (const ch of filteredChannels) {
-      const key = `${ch.language} – ${ch.genre}`;
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(ch);
-    }
-
-    // Sort channels within each group by name A-Z
-    for (const key of Object.keys(groups)) {
-      groups[key].sort((a, b) => a.channel_name.localeCompare(b.channel_name));
-    }
+    const groups = groupChannels(filteredChannels, "language_genre");
 
     // Sort group keys
     const sorted: Record<string, Channel[]> = {};
@@ -168,21 +148,21 @@ export default function HomePage() {
     return sorted;
   }, [filteredChannels]);
 
-  const toggleLanguage = (lang: string) => {
+  const toggleLanguage = useCallback((lang: string) => {
     setSelectedLanguages((prev) =>
       prev.includes(lang) ? prev.filter((l) => l !== lang) : [...prev, lang]
     );
-  };
+  }, []);
 
-  const toggleGenre = (genre: string) => {
+  const toggleGenre = useCallback((genre: string) => {
     setSelectedGenres((prev) =>
       prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
     );
-  };
+  }, []);
 
-  const handlePrint = () => {
+  const handlePrint = useCallback(() => {
     window.print();
-  };
+  }, []);
 
   if (loading) {
     return (

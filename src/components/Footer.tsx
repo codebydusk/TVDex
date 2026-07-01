@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 interface FooterProps {
   onRefreshData?: () => void;
 }
@@ -42,20 +44,20 @@ export default function Footer({ onRefreshData }: FooterProps) {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
+                <Link
                   href="/"
                   className="text-[var(--foreground)] hover:text-[var(--accent)] transition-colors"
                 >
                   Channel Guide
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/docs"
                   className="text-[var(--foreground)] hover:text-[var(--accent)] transition-colors"
                 >
                   API Documentation
-                </a>
+                </Link>
               </li>
               <li>
                 <button

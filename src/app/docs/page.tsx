@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -126,13 +126,15 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
+const emptySubscribe = () => () => {};
+
 export default function DocsPage() {
   const [activeExample, setActiveExample] = useState(0);
-  const [baseUrl, setBaseUrl] = useState("https://tvdex.vercel.app");
-
-  useEffect(() => {
-    setBaseUrl(window.location.origin);
-  }, []);
+  const baseUrl = useSyncExternalStore(
+    emptySubscribe,
+    () => window.location.origin,
+    () => "https://tvdex.vercel.app"
+  );
 
   return (
     <>
