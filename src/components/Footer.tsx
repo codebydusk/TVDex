@@ -95,10 +95,19 @@ export default function Footer({ onRefreshData }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-[var(--border)] text-center text-xs text-[var(--muted)]">
+        <div className="mt-8 pt-6 border-t border-[var(--border)] text-center text-xs text-[var(--muted)] space-y-1">
           <p>
             TVDex © {new Date().getFullYear()} • Data sourced from official
-            channel lists • Not affiliated with any DTH/cable provider
+            channel lists.
+          </p>
+          <p>
+            &quot;Jio&quot; and related marks are registered trademarks of Reliance Jio
+            Infocomm Ltd.
+          </p>
+          <p>
+            TVDex is an independent fan-made directory and is NOT affiliated
+            with, endorsed by, or associated with Reliance Jio or any DTH/cable
+            provider.
           </p>
         </div>
       </div>

@@ -2,24 +2,53 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TVDex — The Smartest Way to Explore TV Channels",
+  title: "Jio STB Channel List & Guide — TVDex",
   description:
-    "Search by number or name, filter by language and genre, and stay up to date with the latest TV channel lineups across Indian DTH and cable platforms.",
+    "Complete and updated Jio STB (Set-Top Box) channel list and guide. Search by number or name, find channel PDFs, and filter by language and genre for JioFiber and JioAirFiber TV channels.",
   keywords: [
-    "TV channels",
-    "Jio",
-    "STB",
-    "channel list",
-    "DTH",
-    "set-top box",
-    "India",
-    "channel guide",
+    "Jio STB channel list",
+    "Jio guide",
+    "Jio channel pdf",
+    "Jio set-top box channels",
+    "JioFiber STB channels",
+    "JioAirFiber STB channels",
+    "Jio TV channels list",
+    "Jio DTH channel numbers",
+    "Jio setup box channel guide",
   ],
+  authors: [{ name: "TVDex Contributors" }],
+  creator: "TVDex",
+  publisher: "TVDex",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+  ),
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "TVDex — TV Channel Database",
+    title: "📺 TVDex — Jio STB Channel Guide",
     description:
-      "Search, filter, and explore 800+ TV channels across 12 languages.",
+      "Search 800+ channels across 12 languages. Get the complete and updated Jio STB & JioFiber channel list.",
+    url: "/",
+    siteName: "TVDex",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "📺 TVDex — Jio STB Channel Guide",
+    description:
+      "Search 800+ channels across 12 languages. Get the complete and updated Jio STB & JioFiber channel list.",
   },
 };
 

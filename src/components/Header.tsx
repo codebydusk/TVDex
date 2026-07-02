@@ -37,7 +37,6 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="flex items-center gap-1">
-            <ThemeToggle />
             <Link
               href="/"
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
@@ -58,6 +57,9 @@ export default function Header() {
             >
               API Docs
             </Link>
+            
+            <div className="mx-2 h-6 w-px bg-[var(--border)]" />
+            <ThemeToggle />
           </nav>
         </div>
       </div>

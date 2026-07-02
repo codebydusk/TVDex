@@ -208,9 +208,9 @@ export default function HomePage() {
         <section className="no-print pt-12 pb-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
             <span className="gradient-text">Explore</span>{" "}
-            <span className="text-[var(--foreground)]">TV Channels</span>
+            <span className="text-[var(--foreground)]">Jio TV Channels</span>
           </h1>
-          <p className="text-lg text-[var(--muted)] max-w-xl mx-auto mb-2">
+          <p className="text-lg text-[var(--muted)] mx-auto mb-1">
             Search, filter, and discover{" "}
             <span className="text-[var(--accent)] font-semibold">
               {channels.length}+
@@ -219,7 +219,10 @@ export default function HomePage() {
             <span className="text-[var(--accent)] font-semibold">
               {languages.length}
             </span>{" "}
-            languages on Jio STB.
+            languages on JioFiber and JioAirFiber STB.
+          </p>
+          <p className="text-sm text-[var(--muted)] opacity-80 mx-auto mb-2">
+            More STB providers are coming soon.
           </p>
           <div className="flex items-center justify-center gap-4 mt-4">
             <Link
@@ -254,7 +257,7 @@ export default function HomePage() {
         </section>
 
         {/* Filters */}
-        <section className="no-print pb-8 space-y-4">
+        <section className="no-print pb-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <FilterPills
             label="Languages"
             options={languages}
