@@ -227,7 +227,7 @@ mark {
     text-align: center;
     margin-bottom: 12pt;
     padding-bottom: 8pt;
-    border-bottom: 2pt solid #333;
+    border-bottom: 2pt solid var(--accent);
   }
 
   .print-logo-title {
@@ -241,13 +241,13 @@ mark {
   .print-logo-icon {
     width: 22px !important;
     height: 22px !important;
-    color: black !important;
+    color: var(--accent) !important;
   }
 
   .print-header h1 {
     font-size: 16pt;
     font-weight: 800;
-    color: black !important;
+    color: var(--accent) !important;
     margin: 0 !important;
   }
 
