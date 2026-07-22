@@ -23,6 +23,23 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [expandOverride, setExpandOverride] = useState<boolean | null>(null);
+
+  // Reset expand override when filters or search query change
+  useEffect(() => {
+    setExpandOverride(null);
+  }, [selectedLanguages, selectedGenres, searchQuery]);
+
+  const isFilteredOrSearched =
+    searchQuery.trim().length > 0 ||
+    selectedLanguages.length > 0 ||
+    selectedGenres.length > 0;
+
+  const isExpandedState =
+    expandOverride !== null ? expandOverride : isFilteredOrSearched;
+
+  const handleExpandAll = useCallback(() => setExpandOverride(true), []);
+  const handleCollapseAll = useCallback(() => setExpandOverride(false), []);
 
   // Fetch fresh channel data from the API
   const fetchChannels = useCallback(async () => {
@@ -295,22 +312,54 @@ export default function HomePage() {
           />
         </section>
 
-        {/* Active filters summary */}
-        {(selectedLanguages.length > 0 || selectedGenres.length > 0) && (
-          <div className="no-print pb-4 flex items-center gap-2 text-sm text-[var(--muted)]">
-            <span>Showing {filteredChannels.length} channels</span>
-            <button
-              onClick={() => {
-                setSelectedLanguages([]);
-                setSelectedGenres([]);
-                setSearchQuery("");
-              }}
-              className="text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors cursor-pointer"
-            >
-              Reset all filters
-            </button>
+        {/* Results Bar & Expand/Collapse Controls */}
+        <div className="no-print pb-4 flex flex-wrap items-center justify-between gap-3 text-sm border-b border-[var(--border)] mb-6">
+          <div className="flex items-center gap-2 text-[var(--muted)]">
+            <span className="font-semibold text-[var(--foreground)]">
+              {filteredChannels.length} {filteredChannels.length === 1 ? "channel" : "channels"} found
+            </span>
+            {(selectedLanguages.length > 0 || selectedGenres.length > 0 || searchQuery.length > 0) && (
+              <>
+                <span>•</span>
+                <button
+                  onClick={() => {
+                    setSelectedLanguages([]);
+                    setSelectedGenres([]);
+                    setSearchQuery("");
+                  }}
+                  className="text-[var(--accent)] hover:text-[var(--accent-hover)] font-medium transition-colors cursor-pointer"
+                >
+                  Reset filters
+                </button>
+              </>
+            )}
           </div>
-        )}
+
+          {Object.keys(groupedChannels).length > 0 && (
+            <div className="flex items-center gap-2 text-xs">
+              <button
+                onClick={handleExpandAll}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] hover:border-[var(--border-hover)] hover:bg-[var(--card-hover)] transition-all cursor-pointer font-medium"
+                title="Expand all channel groups"
+              >
+                <svg className="h-3.5 w-3.5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+                Expand All
+              </button>
+              <button
+                onClick={handleCollapseAll}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] hover:border-[var(--border-hover)] hover:bg-[var(--card-hover)] transition-all cursor-pointer font-medium"
+                title="Collapse all channel groups"
+              >
+                <svg className="h-3.5 w-3.5 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                </svg>
+                Collapse All
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Channel Tables */}
         <section className="space-y-4 pb-12">
@@ -339,15 +388,11 @@ export default function HomePage() {
           ) : (
             Object.entries(groupedChannels).map(([key, chans]) => (
               <ChannelTable
-                key={key}
+                key={`${key}-${isExpandedState}`}
                 groupKey={key}
                 channels={chans}
                 searchQuery={searchQuery}
-                defaultExpanded={
-                  searchQuery.trim().length > 0 ||
-                  selectedLanguages.length > 0 ||
-                  selectedGenres.length > 0
-                }
+                defaultExpanded={isExpandedState}
               />
             ))
           )}
