@@ -37,29 +37,26 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="flex items-center gap-1">
+            <ThemeToggle />
+            <div className="mx-2 h-6 w-px bg-[var(--border)]" />
             <Link
               href="/"
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-                pathname === "/"
-                  ? "bg-[var(--accent)] text-white"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
-              }`}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${pathname === "/"
+                ? "bg-[var(--accent)] text-white"
+                : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
+                }`}
             >
               Channels
             </Link>
             <Link
               href="/docs"
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-                pathname === "/docs"
-                  ? "bg-[var(--accent)] text-white"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
-              }`}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${pathname === "/docs"
+                ? "bg-[var(--accent)] text-white"
+                : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
+                }`}
             >
               API Docs
             </Link>
-            
-            <div className="mx-2 h-6 w-px bg-[var(--border)]" />
-            <ThemeToggle />
           </nav>
         </div>
       </div>

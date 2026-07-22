@@ -204,7 +204,22 @@ export default function HomePage() {
 
       {/* Print Header */}
       <div className="print-header">
-        <h1>TVDex — Jio STB Channel Guide</h1>
+        <div className="print-logo-title">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className="print-logo-icon"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <path d="M8 21h8" />
+            <path d="M12 17v4" />
+            <path d="M7 8l3 3-3 3" />
+            <line x1="13" y1="13" x2="17" y2="13" />
+          </svg>
+          <h1>TVDex — Jio STB Channel Guide</h1>
+        </div>
         <p>
           {channels.length} channels across {languages.length} languages •
           Generated on {new Date().toLocaleDateString()}
@@ -333,14 +348,38 @@ export default function HomePage() {
                 channels={chans}
                 searchQuery={searchQuery}
                 defaultExpanded={
-                  Object.keys(groupedChannels).length <= 5 ||
-                  searchQuery.length > 0
+                  searchQuery.trim().length > 0 ||
+                  selectedLanguages.length > 0 ||
+                  selectedGenres.length > 0
                 }
               />
             ))
           )}
         </section>
       </main>
+
+      {/* Floating Download PDF Action Button */}
+      <button
+        onClick={handlePrint}
+        aria-label="Download PDF"
+        title="Download PDF"
+        className="no-print fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-[var(--accent)] text-white p-3.5 sm:px-5 sm:py-3 shadow-lg shadow-[var(--accent-glow)] hover:bg-[var(--accent-hover)] hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+      >
+        <svg
+          className="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+        <span className="hidden sm:inline text-sm font-semibold">Download PDF</span>
+      </button>
 
       <Footer onRefreshData={handleRefreshData} />
     </>

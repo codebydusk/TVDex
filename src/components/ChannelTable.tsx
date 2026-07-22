@@ -15,9 +15,15 @@ export default function ChannelTable({
   groupKey,
   channels,
   searchQuery,
-  defaultExpanded = true,
+  defaultExpanded = false,
 }: ChannelTableProps) {
+  const [prevDefaultExpanded, setPrevDefaultExpanded] = useState(defaultExpanded);
   const [expanded, setExpanded] = useState(defaultExpanded);
+
+  if (prevDefaultExpanded !== defaultExpanded) {
+    setPrevDefaultExpanded(defaultExpanded);
+    setExpanded(defaultExpanded);
+  }
 
   return (
     <div className="channel-group animate-fade-in">
