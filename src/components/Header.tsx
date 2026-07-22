@@ -41,20 +41,24 @@ export default function Header() {
             <div className="mx-2 h-6 w-px bg-[var(--border)]" />
             <Link
               href="/"
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium border transition-all ${
                 pathname === "/"
-                  ? "bg-[var(--accent)] text-white"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
+                  ? "bg-[var(--accent)] border-[var(--accent)] text-white shadow-sm"
+                  : "bg-[var(--card)] border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] hover:bg-[var(--card-hover)]"
               }`}
             >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="2" y="4" width="20" height="14" rx="2" strokeWidth={2} />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 20h8M12 18v2" />
+              </svg>
               Channels
             </Link>
             <Link
               href="/docs"
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium border transition-all ${
                 pathname === "/docs"
-                  ? "bg-[var(--accent)] text-white"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
+                  ? "bg-[var(--accent)] border-[var(--accent)] text-white shadow-sm"
+                  : "bg-[var(--card)] border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] hover:bg-[var(--card-hover)]"
               }`}
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
