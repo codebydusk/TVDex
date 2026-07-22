@@ -63,8 +63,8 @@ export default function ChannelTable({
                 <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
                   Channel Name (A-Z)
                 </th>
-                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)] w-32">
-                  Channel No.
+                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)] w-48">
+                  Jio Channel No.
                 </th>
                 <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)] w-40">
                   Genre

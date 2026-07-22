@@ -110,21 +110,29 @@ export default function HomePage() {
     [channels]
   );
 
+  // Both counts use the full intersection of selected languages + genres
+  const intersectedChannels = useMemo(
+    () => filterChannels(channels, selectedLanguages, selectedGenres),
+    [channels, selectedLanguages, selectedGenres]
+  );
+
   const languageCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    channels.forEach((ch) => {
+    languages.forEach((lang) => { counts[lang] = 0; });
+    intersectedChannels.forEach((ch) => {
       counts[ch.language] = (counts[ch.language] || 0) + 1;
     });
     return counts;
-  }, [channels]);
+  }, [languages, intersectedChannels]);
 
   const genreCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    channels.forEach((ch) => {
+    genres.forEach((genre) => { counts[genre] = 0; });
+    intersectedChannels.forEach((ch) => {
       counts[ch.genre] = (counts[ch.genre] || 0) + 1;
     });
     return counts;
-  }, [channels]);
+  }, [genres, intersectedChannels]);
 
   // Filter and search — reuse lib functions
   const filteredChannels = useMemo(() => {
