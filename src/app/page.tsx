@@ -169,7 +169,23 @@ export default function HomePage() {
   }, []);
 
   const handlePrint = useCallback(() => {
-    window.print();
+    const html = document.documentElement;
+    const wasDark = html.classList.contains("dark");
+
+    // Temporarily force light mode for clean PDF output
+    if (wasDark) {
+      html.classList.remove("dark");
+    }
+
+    // Small delay to let the browser repaint with light styles
+    requestAnimationFrame(() => {
+      window.print();
+
+      // Restore dark mode after the print dialog closes
+      if (wasDark) {
+        html.classList.add("dark");
+      }
+    });
   }, []);
 
   if (loading) {
