@@ -186,6 +186,18 @@ export default function HomePage() {
   }, []);
 
   const handlePrint = useCallback(() => {
+    // Check if any table group is currently expanded in the DOM
+    const hasExpandedTables = Boolean(
+      document.querySelector(".channel-group:not(.no-print)")
+    );
+
+    // If all tables are collapsed, auto-expand all for print and collapse back after
+    const autoExpanded = !hasExpandedTables;
+
+    if (autoExpanded) {
+      setExpandOverride(true);
+    }
+
     const html = document.documentElement;
     const wasDark = html.classList.contains("dark");
 
@@ -194,15 +206,20 @@ export default function HomePage() {
       html.classList.remove("dark");
     }
 
-    // Small delay to let the browser repaint with light styles
-    requestAnimationFrame(() => {
+    // Delay to let React render expanded tables and light styles
+    setTimeout(() => {
       window.print();
 
       // Restore dark mode after the print dialog closes
       if (wasDark) {
         html.classList.add("dark");
       }
-    });
+
+      // Revert back to collapsed all if we auto-expanded
+      if (autoExpanded) {
+        setExpandOverride(false);
+      }
+    }, autoExpanded ? 150 : 60);
   }, []);
 
   if (loading) {

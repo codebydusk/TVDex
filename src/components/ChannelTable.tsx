@@ -49,7 +49,7 @@ export default function ChannelTable({
   }, [channels, sortField, sortOrder]);
 
   return (
-    <div className="channel-group animate-fade-in">
+    <div className={`channel-group animate-fade-in ${!expanded ? "no-print" : ""}`}>
       {/* Group Header */}
       <button
         onClick={() => setExpanded(!expanded)}
