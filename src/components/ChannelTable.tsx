@@ -9,6 +9,7 @@ interface ChannelTableProps {
   channels: Channel[];
   searchQuery: string;
   defaultExpanded?: boolean;
+  forceExpand?: { mode: "expand" | "collapse"; id: number } | null;
 }
 
 export default function ChannelTable({
@@ -16,13 +17,18 @@ export default function ChannelTable({
   channels,
   searchQuery,
   defaultExpanded = false,
+  forceExpand,
 }: ChannelTableProps) {
   const [prevDefaultExpanded, setPrevDefaultExpanded] = useState(defaultExpanded);
+  const [prevSignalId, setPrevSignalId] = useState<number | undefined>(forceExpand?.id);
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [sortField, setSortField] = useState<"name" | "number">("number");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  if (prevDefaultExpanded !== defaultExpanded) {
+  if (forceExpand && prevSignalId !== forceExpand.id) {
+    setPrevSignalId(forceExpand.id);
+    setExpanded(forceExpand.mode === "expand");
+  } else if (prevDefaultExpanded !== defaultExpanded) {
     setPrevDefaultExpanded(defaultExpanded);
     setExpanded(defaultExpanded);
   }

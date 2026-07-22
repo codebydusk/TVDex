@@ -24,6 +24,10 @@ export default function HomePage() {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [expandOverride, setExpandOverride] = useState<boolean | null>(null);
+  const [forceExpandSignal, setForceExpandSignal] = useState<{
+    mode: "expand" | "collapse";
+    id: number;
+  } | null>(null);
 
   // Reset expand override when filters or search query change
   useEffect(() => {
@@ -38,8 +42,15 @@ export default function HomePage() {
   const isExpandedState =
     expandOverride !== null ? expandOverride : isFilteredOrSearched;
 
-  const handleExpandAll = useCallback(() => setExpandOverride(true), []);
-  const handleCollapseAll = useCallback(() => setExpandOverride(false), []);
+  const handleExpandAll = useCallback(() => {
+    setExpandOverride(true);
+    setForceExpandSignal({ mode: "expand", id: Date.now() });
+  }, []);
+
+  const handleCollapseAll = useCallback(() => {
+    setExpandOverride(false);
+    setForceExpandSignal({ mode: "collapse", id: Date.now() });
+  }, []);
 
   // Fetch fresh channel data from the API
   const fetchChannels = useCallback(async () => {
@@ -195,7 +206,7 @@ export default function HomePage() {
     const autoExpanded = !hasExpandedTables;
 
     if (autoExpanded) {
-      setExpandOverride(true);
+      handleExpandAll();
     }
 
     const html = document.documentElement;
@@ -217,10 +228,10 @@ export default function HomePage() {
 
       // Revert back to collapsed all if we auto-expanded
       if (autoExpanded) {
-        setExpandOverride(false);
+        handleCollapseAll();
       }
     }, autoExpanded ? 150 : 60);
-  }, []);
+  }, [handleExpandAll, handleCollapseAll]);
 
   if (loading) {
     return (
@@ -410,6 +421,7 @@ export default function HomePage() {
                 channels={chans}
                 searchQuery={searchQuery}
                 defaultExpanded={isExpandedState}
+                forceExpand={forceExpandSignal}
               />
             ))
           )}
