@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { Channel } from "@/types";
 import { highlightMatch } from "@/lib/utils";
 
@@ -19,11 +19,34 @@ export default function ChannelTable({
 }: ChannelTableProps) {
   const [prevDefaultExpanded, setPrevDefaultExpanded] = useState(defaultExpanded);
   const [expanded, setExpanded] = useState(defaultExpanded);
+  const [sortField, setSortField] = useState<"name" | "number">("name");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   if (prevDefaultExpanded !== defaultExpanded) {
     setPrevDefaultExpanded(defaultExpanded);
     setExpanded(defaultExpanded);
   }
+
+  const toggleSort = (field: "name" | "number") => {
+    if (sortField === field) {
+      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortedChannels = useMemo(() => {
+    return [...channels].sort((a, b) => {
+      let cmp = 0;
+      if (sortField === "number") {
+        cmp = a.channel_number - b.channel_number;
+      } else {
+        cmp = a.channel_name.localeCompare(b.channel_name);
+      }
+      return sortOrder === "asc" ? cmp : -cmp;
+    });
+  }, [channels, sortField, sortOrder]);
 
   return (
     <div className="channel-group animate-fade-in">
@@ -67,10 +90,36 @@ export default function ChannelTable({
                   Sl.
                 </th>
                 <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-                  Channel Name (A-Z)
+                  <button
+                    onClick={() => toggleSort("name")}
+                    className="inline-flex items-center gap-1.5 hover:text-[var(--accent)] transition-colors cursor-pointer select-none"
+                    title="Sort by Channel Name"
+                  >
+                    Channel Name
+                    <span className="text-[10px] opacity-75">
+                      {sortField === "name"
+                        ? sortOrder === "asc"
+                          ? "▲ (A-Z)"
+                          : "▼ (Z-A)"
+                        : "↕"}
+                    </span>
+                  </button>
                 </th>
-                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)] w-48">
-                  Jio Channel No.
+                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)] w-48 whitespace-nowrap">
+                  <button
+                    onClick={() => toggleSort("number")}
+                    className="inline-flex items-center gap-1.5 hover:text-[var(--accent)] transition-colors cursor-pointer select-none"
+                    title="Sort by Jio Channel Number"
+                  >
+                    Jio Channel No.
+                    <span className="text-[10px] opacity-75">
+                      {sortField === "number"
+                        ? sortOrder === "asc"
+                          ? "▲ (1-9)"
+                          : "▼ (9-1)"
+                        : "↕"}
+                    </span>
+                  </button>
                 </th>
                 <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-[var(--muted)] w-40">
                   Genre
@@ -78,7 +127,7 @@ export default function ChannelTable({
               </tr>
             </thead>
             <tbody>
-              {channels.map((ch, idx) => (
+              {sortedChannels.map((ch, idx) => (
                 <tr
                   key={ch.id}
                   className={`border-b border-[var(--border)] transition-colors hover:bg-[var(--card-hover)] ${

@@ -75,11 +75,11 @@ export default function HomePage() {
                 try {
                   localStorage.removeItem(STORAGE_KEY);
                   localStorage.removeItem(VERSION_KEY);
-                } catch {}
+                } catch { }
                 fetchChannels();
               }
             })
-            .catch(() => {});
+            .catch(() => { });
           return;
         }
       } catch {
@@ -95,7 +95,7 @@ export default function HomePage() {
     try {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(VERSION_KEY);
-    } catch {}
+    } catch { }
     fetchChannels();
   }, [fetchChannels]);
 
@@ -263,26 +263,6 @@ export default function HomePage() {
           <p className="text-sm text-[var(--muted)] opacity-80 mx-auto mb-2">
             More STB providers are coming soon.
           </p>
-          <div className="flex items-center justify-center gap-4 mt-4">
-            <Link
-              href="/docs"
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--card)] border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] transition-all"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-              API Docs
-            </Link>
-            <button
-              onClick={handlePrint}
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--card)] border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] transition-all cursor-pointer"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              Download PDF
-            </button>
-          </div>
         </section>
 
         {/* Search */}
@@ -381,18 +361,8 @@ export default function HomePage() {
         title="Download PDF"
         className="no-print fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-[var(--accent)] text-white p-3.5 sm:px-5 sm:py-3 shadow-lg shadow-[var(--accent-glow)] hover:bg-[var(--accent-hover)] hover:scale-105 active:scale-95 transition-all cursor-pointer group"
       >
-        <svg
-          className="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
         </svg>
         <span className="hidden sm:inline text-sm font-semibold">Download PDF</span>
       </button>

@@ -41,20 +41,25 @@ export default function Header() {
             <div className="mx-2 h-6 w-px bg-[var(--border)]" />
             <Link
               href="/"
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${pathname === "/"
-                ? "bg-[var(--accent)] text-white"
-                : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
-                }`}
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                pathname === "/"
+                  ? "bg-[var(--accent)] text-white"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
+              }`}
             >
               Channels
             </Link>
             <Link
               href="/docs"
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${pathname === "/docs"
-                ? "bg-[var(--accent)] text-white"
-                : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
-                }`}
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                pathname === "/docs"
+                  ? "bg-[var(--accent)] text-white"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
+              }`}
             >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
               API Docs
             </Link>
           </nav>
