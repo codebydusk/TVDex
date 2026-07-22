@@ -230,10 +230,25 @@ mark {
     border-bottom: 2pt solid #333;
   }
 
+  .print-logo-title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-bottom: 4pt;
+  }
+
+  .print-logo-icon {
+    width: 22px !important;
+    height: 22px !important;
+    color: black !important;
+  }
+
   .print-header h1 {
     font-size: 16pt;
     font-weight: 800;
     color: black !important;
+    margin: 0 !important;
   }
 
   .print-header p {
