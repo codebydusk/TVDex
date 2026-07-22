@@ -19,7 +19,7 @@ export default function ChannelTable({
 }: ChannelTableProps) {
   const [prevDefaultExpanded, setPrevDefaultExpanded] = useState(defaultExpanded);
   const [expanded, setExpanded] = useState(defaultExpanded);
-  const [sortField, setSortField] = useState<"name" | "number">("name");
+  const [sortField, setSortField] = useState<"name" | "number">("number");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   if (prevDefaultExpanded !== defaultExpanded) {
