@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, memo } from "react";
 import type { Channel } from "@/types";
 import { highlightMatch } from "@/lib/utils";
 
@@ -12,7 +12,7 @@ interface ChannelTableProps {
   forceExpand?: { mode: "expand" | "collapse"; id: number } | null;
 }
 
-export default function ChannelTable({
+function ChannelTableComponent({
   groupKey,
   channels,
   searchQuery,
@@ -164,3 +164,5 @@ export default function ChannelTable({
     </div>
   );
 }
+
+export default memo(ChannelTableComponent);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SearchBar from "@/components/SearchBar";
@@ -12,6 +11,8 @@ import {
   searchChannels,
   filterChannels,
   groupChannels,
+  getLanguages,
+  getGenres,
 } from "@/lib/channels";
 
 const STORAGE_KEY = "tvdex_channels";
@@ -29,10 +30,14 @@ export default function HomePage() {
     id: number;
   } | null>(null);
 
-  // Reset expand override when filters or search query change
-  useEffect(() => {
+  // Render-phase sync: reset expand override when filters or search query change
+  const [prevFilterKey, setPrevFilterKey] = useState("");
+  const currentFilterKey = `${searchQuery}|${selectedLanguages.join(",")}|${selectedGenres.join(",")}`;
+
+  if (prevFilterKey !== currentFilterKey) {
+    setPrevFilterKey(currentFilterKey);
     setExpandOverride(null);
-  }, [selectedLanguages, selectedGenres, searchQuery]);
+  }
 
   const isFilteredOrSearched =
     searchQuery.trim().length > 0 ||
@@ -127,14 +132,14 @@ export default function HomePage() {
     fetchChannels();
   }, [fetchChannels]);
 
-  // Derived data
+  // Derived data — cached static lists with dynamic fallback
   const languages = useMemo(
-    () => [...new Set(channels.map((ch) => ch.language))].sort(),
+    () => (channels.length > 0 ? [...new Set(channels.map((ch) => ch.language))].sort() : getLanguages()),
     [channels]
   );
 
   const genres = useMemo(
-    () => [...new Set(channels.map((ch) => ch.genre))].sort(),
+    () => (channels.length > 0 ? [...new Set(channels.map((ch) => ch.genre))].sort() : getGenres()),
     [channels]
   );
 

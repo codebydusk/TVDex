@@ -6,6 +6,15 @@ import channelData from "../../assets/jio_stb_channels.json";
 
 const channels: Channel[] = channelData as Channel[];
 
+// Pre-computed static metadata for instant O(1) access
+const ALL_LANGUAGES: string[] = Object.freeze(
+  [...new Set(channels.map((ch) => ch.language))].sort()
+) as unknown as string[];
+
+const ALL_GENRES: string[] = Object.freeze(
+  [...new Set(channels.map((ch) => ch.genre))].sort()
+) as unknown as string[];
+
 export function getAllChannels(): Channel[] {
   return channels;
 }
@@ -26,27 +35,37 @@ export function filterChannels(
   language?: string | string[],
   genre?: string | string[]
 ): Channel[] {
-  let filtered = data;
+  let langSet: Set<string> | null = null;
+  let genreSet: Set<string> | null = null;
 
   if (language) {
-    const langs = Array.isArray(language) ? language : language.split(",").map((l) => l.trim());
-    if (langs.length > 0 && langs[0] !== "") {
-      filtered = filtered.filter((ch) =>
-        langs.some((l) => ch.language.toLowerCase() === l.toLowerCase())
-      );
+    const langs = Array.isArray(language)
+      ? language
+      : language.split(",").map((l) => l.trim());
+    const validLangs = langs.filter(Boolean).map((l) => l.toLowerCase());
+    if (validLangs.length > 0) {
+      langSet = new Set(validLangs);
     }
   }
 
   if (genre) {
-    const genres = Array.isArray(genre) ? genre : genre.split(",").map((g) => g.trim());
-    if (genres.length > 0 && genres[0] !== "") {
-      filtered = filtered.filter((ch) =>
-        genres.some((g) => ch.genre.toLowerCase() === g.toLowerCase())
-      );
+    const genres = Array.isArray(genre)
+      ? genre
+      : genre.split(",").map((g) => g.trim());
+    const validGenres = genres.filter(Boolean).map((g) => g.toLowerCase());
+    if (validGenres.length > 0) {
+      genreSet = new Set(validGenres);
     }
   }
 
-  return filtered;
+  if (!langSet && !genreSet) return data;
+
+  // Single-pass filter with O(1) Set lookup
+  return data.filter((ch) => {
+    if (langSet && !langSet.has(ch.language.toLowerCase())) return false;
+    if (genreSet && !genreSet.has(ch.genre.toLowerCase())) return false;
+    return true;
+  });
 }
 
 export function sortChannels(
@@ -128,9 +147,9 @@ export function paginateChannels(
 }
 
 export function getLanguages(): string[] {
-  return [...new Set(channels.map((ch) => ch.language))].sort();
+  return ALL_LANGUAGES as string[];
 }
 
 export function getGenres(): string[] {
-  return [...new Set(channels.map((ch) => ch.genre))].sort();
+  return ALL_GENRES as string[];
 }
