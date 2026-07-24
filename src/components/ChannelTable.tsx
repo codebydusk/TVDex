@@ -136,7 +136,12 @@ function ChannelTableComponent({
               {sortedChannels.map((ch, idx) => (
                 <tr
                   key={ch.id}
-                  className={`border-b border-[var(--border)] transition-colors hover:bg-[var(--card-hover)] ${
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+                    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+                  }}
+                  className={`hover-glow-row border-b border-[var(--border)] transition-colors ${
                     idx % 2 === 0 ? "bg-transparent" : "bg-[var(--card)]/30"
                   }`}
                 >

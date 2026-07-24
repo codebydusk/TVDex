@@ -29,6 +29,42 @@ export default function HomePage() {
     mode: "expand" | "collapse";
     id: number;
   } | null>(null);
+  const [isUrlInitialized, setIsUrlInitialized] = useState(false);
+
+  // Initialize state from URL on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get("q");
+      const lang = params.get("lang");
+      const genre = params.get("genre");
+      
+      if (q) setSearchQuery(q);
+      if (lang) setSelectedLanguages(lang.split(",").filter(Boolean));
+      if (genre) setSelectedGenres(genre.split(",").filter(Boolean));
+      
+      setIsUrlInitialized(true);
+    }
+  }, []);
+
+  // Sync state to URL whenever it changes (only after initial load)
+  useEffect(() => {
+    if (!isUrlInitialized || typeof window === "undefined") return;
+    
+    const params = new URLSearchParams(window.location.search);
+    
+    if (searchQuery) params.set("q", searchQuery);
+    else params.delete("q");
+    
+    if (selectedLanguages.length > 0) params.set("lang", selectedLanguages.join(","));
+    else params.delete("lang");
+    
+    if (selectedGenres.length > 0) params.set("genre", selectedGenres.join(","));
+    else params.delete("genre");
+    
+    const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [searchQuery, selectedLanguages, selectedGenres, isUrlInitialized]);
 
   // Render-phase sync: reset expand override when filters or search query change
   const [prevFilterKey, setPrevFilterKey] = useState("");

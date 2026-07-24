@@ -8,43 +8,49 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #09090b;
-  --card: #f4f4f5;
-  --card-hover: #e4e4e7;
-  --border: #e4e4e7;
-  --border-hover: #d4d4d8;
+  --background-start: #f8fafc;
+  --background-end: #e0e7ff;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.4);
+  --card-hover: rgba(255, 255, 255, 0.6);
+  --border: rgba(255, 255, 255, 0.8);
+  --border-hover: rgba(255, 255, 255, 1);
   --accent: #4f46e5;
   --accent-hover: #4338ca;
   --accent-glow: rgba(79, 70, 229, 0.15);
   --success: #16a34a;
   --warning: #d97706;
   --danger: #dc2626;
-  --muted: #52525b;
-  --mark-bg: rgba(250, 204, 21, 0.5);
+  --muted: #475569;
   --mark-text: #b45309;
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-bg-hover: rgba(244, 244, 245, 0.9);
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --glass-bg-hover: rgba(255, 255, 255, 0.7);
+  --aurora-1: rgba(147, 197, 253, 0.7); /* blue-300 */
+  --aurora-2: rgba(196, 181, 253, 0.7); /* violet-300 */
+  --aurora-3: rgba(167, 243, 208, 0.6); /* emerald-200 */
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #18181b;
-  --card-hover: #27272a;
-  --border: #27272a;
-  --border-hover: #3f3f46;
+  --background-start: #020617;
+  --background-end: #1e1b4b;
+  --foreground: #f8fafc;
+  --card: rgba(15, 23, 42, 0.4);
+  --card-hover: rgba(30, 41, 59, 0.5);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
   --accent: #6366f1;
   --accent-hover: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-glow: rgba(99, 102, 241, 0.25);
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --muted: #71717a;
-  --mark-bg: rgba(250, 204, 21, 0.3);
+  --muted: #94a3b8;
   --mark-text: #fbbf24;
-  --glass-bg: rgba(24, 24, 27, 0.8);
-  --glass-bg-hover: rgba(39, 39, 42, 0.9);
+  --glass-bg: rgba(15, 23, 42, 0.5);
+  --glass-bg-hover: rgba(30, 41, 59, 0.6);
+  --aurora-1: rgba(30, 27, 75, 0.8); /* deep indigo */
+  --aurora-2: rgba(76, 29, 149, 0.6); /* deep violet */
+  --aurora-3: rgba(15, 23, 42, 0.8); /* slate 900 */
 }
 
 * {
@@ -72,11 +78,28 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background-start), var(--background-end));
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism automatically applied to card elements */
+[class*="bg-[var(--card)]"],
+.glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Mouse-tracking hover glow for table rows */
+.hover-glow-row:hover {
+  background-image: radial-gradient(
+    300px circle at var(--x, 50%) var(--y, 50%),
+    var(--accent-glow),
+    transparent 40%
+  );
 }
 
 mark {
@@ -138,8 +161,50 @@ mark {
   }
 }
 
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33% { transform: translate(5%, -5%) scale(1.05); }
+  66% { transform: translate(-5%, 5%) scale(0.95); }
+}
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33% { transform: translate(-5%, 5%) scale(1.05); }
+  66% { transform: translate(5%, -5%) scale(0.95); }
+}
+@keyframes aurora-3 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33% { transform: translate(5%, 5%) scale(1.05); }
+  66% { transform: translate(-5%, -5%) scale(0.95); }
+}
+@keyframes aurora-4 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33% { transform: translate(-10%, -5%) scale(1.1); }
+  66% { transform: translate(5%, 10%) scale(0.9); }
+}
+@keyframes aurora-5 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33% { transform: translate(10%, 10%) scale(1.1); }
+  66% { transform: translate(-10%, -10%) scale(0.9); }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out;
+}
+
+.animate-aurora-1 {
+  animation: aurora-1 12s ease-in-out infinite alternate;
+}
+.animate-aurora-2 {
+  animation: aurora-2 15s ease-in-out infinite alternate;
+}
+.animate-aurora-3 {
+  animation: aurora-3 18s ease-in-out infinite alternate;
+}
+.animate-aurora-4 {
+  animation: aurora-4 22s ease-in-out infinite alternate;
+}
+.animate-aurora-5 {
+  animation: aurora-5 25s ease-in-out infinite alternate;
 }
 
 .animate-slide-down {
@@ -174,7 +239,8 @@ mark {
   body,
   .dark {
     color-scheme: light !important;
-    --background: #ffffff !important;
+    --background-start: #ffffff !important;
+    --background-end: #ffffff !important;
     --foreground: #09090b !important;
     --card: #ffffff !important;
     --card-hover: #f4f4f5 !important;

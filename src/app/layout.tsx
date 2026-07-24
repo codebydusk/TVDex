@@ -84,6 +84,16 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
+          {/* Animated Aurora Background */}
+          <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none no-print">
+            <div className="absolute -top-[5%] -left-[5%] w-[30vw] h-[30vw] rounded-full bg-[var(--aurora-1)] mix-blend-multiply dark:mix-blend-screen filter blur-[80px] opacity-70 animate-aurora-1" />
+            <div className="absolute top-[10%] -right-[5%] w-[25vw] h-[25vw] rounded-full bg-[var(--aurora-2)] mix-blend-multiply dark:mix-blend-screen filter blur-[80px] opacity-70 animate-aurora-2" />
+            <div className="absolute -bottom-[10%] left-[20%] w-[35vw] h-[35vw] rounded-full bg-[var(--aurora-3)] mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-aurora-3" />
+            
+            {/* Additional orbs for large screens */}
+            <div className="hidden xl:block absolute bottom-[5%] -right-[5%] w-[25vw] h-[25vw] rounded-full bg-[var(--aurora-1)] mix-blend-multiply dark:mix-blend-screen filter blur-[90px] opacity-50 animate-aurora-4" />
+            <div className="hidden 2xl:block absolute top-[25%] left-[35%] w-[20vw] h-[20vw] rounded-full bg-[var(--aurora-2)] mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-50 animate-aurora-5" />
+          </div>
           {children}
         </ThemeProvider>
       </body>

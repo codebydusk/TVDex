@@ -7,9 +7,11 @@
 ## ✨ Features
 
 - **🔍 Instant Search** — Search by channel name or number with real-time highlighting
+- **🔗 Shareable URLs** — Filters and search queries sync to the URL instantly so you can bookmark or share specific views
 - **🌐 Multi-Language Filters** — Filter across 12 Indian languages (Hindi, English, Telugu, Tamil, Kannada, Malayalam, Marathi, Gujarati, Punjabi, Bengali, Assamese, Odia)
 - **🎭 Genre Filters** — Entertainment, News, Sports, Movies, Kids, Devotional, Music, and more
 - **📊 Grouped View** — Channels organized by Language + Genre with collapsible tables
+- **🎨 Premium UI** — Dynamic Glassmorphism theme with Animated Aurora backgrounds and table hover glows
 - **📄 PDF Download** — Clean A4-printable channel list with print-optimized styles
 - **⚡ Offline-First** — Data cached in localStorage, auto-refreshes when updates are available
 - **🔗 REST API** — Public API with search, filter, sort, pagination, and grouping
