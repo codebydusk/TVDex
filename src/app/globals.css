@@ -48,9 +48,9 @@
   --mark-text: #fbbf24;
   --glass-bg: rgba(15, 23, 42, 0.5);
   --glass-bg-hover: rgba(30, 41, 59, 0.6);
-  --aurora-1: rgba(30, 27, 75, 0.8); /* deep indigo */
-  --aurora-2: rgba(76, 29, 149, 0.6); /* deep violet */
-  --aurora-3: rgba(15, 23, 42, 0.8); /* slate 900 */
+  --aurora-1: rgba(6, 182, 212, 0.4); /* cyan */
+  --aurora-2: rgba(236, 72, 153, 0.3); /* magenta/pink */
+  --aurora-3: rgba(59, 130, 246, 0.4); /* bright blue */
 }
 
 * {

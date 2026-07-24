@@ -15,7 +15,7 @@ export function ThemeToggle() {
   );
 
   if (!mounted) {
-    return <div className="w-14 h-7" />;
+    return <div className="w-9 h-9" />;
   }
 
   const isDark = theme === "dark";
@@ -23,26 +23,28 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative flex items-center w-14 h-7 rounded-full bg-[var(--card)] border border-[var(--border)] transition-colors focus:outline-none hover:border-[var(--border-hover)] cursor-pointer"
+      className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[var(--card)] border border-[var(--border)] glass transition-all duration-300 hover:border-[var(--accent)] hover:shadow-[0_0_15px_var(--accent-glow)] focus:outline-none cursor-pointer overflow-hidden group"
       aria-label="Toggle theme"
+      title={`Switch to ${isDark ? "Light" : "Dark"} Mode`}
     >
-      <span className="absolute left-1.5 text-[var(--muted)] opacity-50">
-        <Sun size={12} />
-      </span>
-      <span className="absolute right-1.5 text-[var(--muted)] opacity-50">
-        <Moon size={12} />
-      </span>
-      <span
-        className={`absolute left-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--foreground)] text-[var(--background)] transition-transform duration-300 ${
-          isDark ? "translate-x-7" : "translate-x-0"
-        }`}
-      >
-        {isDark ? (
-          <Moon size={12} fill="currentColor" />
-        ) : (
-          <Sun size={12} fill="currentColor" />
-        )}
-      </span>
+      <div className="relative flex items-center justify-center w-full h-full">
+        <Sun
+          size={18}
+          className={`absolute transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            isDark
+              ? "opacity-0 -rotate-90 scale-50 text-[var(--muted)]"
+              : "opacity-100 rotate-0 scale-100 text-[var(--accent)]"
+          }`}
+        />
+        <Moon
+          size={18}
+          className={`absolute transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            isDark
+              ? "opacity-100 rotate-0 scale-100 text-[var(--accent)]"
+              : "opacity-0 rotate-90 scale-50 text-[var(--muted)]"
+          }`}
+        />
+      </div>
     </button>
   );
 }
