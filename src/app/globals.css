@@ -86,6 +86,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide default cursor on desktop (CustomCursor handles it) */
+@media (pointer: fine) {
+  body, button, a, select, [role="button"] {
+    cursor: none !important;
+  }
+  input, textarea {
+    cursor: text !important;
+  }
+}
+
 /* Glassmorphism automatically applied to card elements */
 [class*="bg-[var(--card)]"],
 .glass {
